@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-function Movies({ mediaList, setMediaList }) {
+function Movies({ mediaList, setMediaList, addToCart }) {
   const [movies, setMovies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
@@ -103,10 +103,6 @@ function Movies({ mediaList, setMediaList }) {
       {loading && <p>Loading movies...</p>}
       {error && <p>{error}</p>}
 
-      
-      
-      
-      
       <div className="movie-grid">
         {movies.map((movie) => (
           <div key={movie.id} className="movie-card">
@@ -117,25 +113,32 @@ function Movies({ mediaList, setMediaList }) {
                 className="movie-poster"
               />
             )}
-            
-            
+
             <h3>{movie.title}</h3>
-            <p><strong>Release Date:</strong> {movie.release_date}</p>
-            <p><strong>TMDB Rating:</strong> {movie.vote_average}</p>
+            <p>
+              <strong>Release Date:</strong> {movie.release_date}
+            </p>
+            <p>
+              <strong>TMDB Rating:</strong> {movie.vote_average}
+            </p>
             <p>{movie.overview}</p>
 
             <button
               type="button"
               className="btn-primary"
               onClick={() => addToWatchList(movie)}
-              
-              
-              >
+            >
               Add to Watch List
+            </button>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => addToCart(movie)}
+            >
+              Add to Cart
             </button>
           </div>
         ))}
-
       </div>
     </div>
   );
