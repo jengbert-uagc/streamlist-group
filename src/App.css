@@ -1,0 +1,239 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base */
+body {
+  font-family: Arial, sans-serif;
+  background: lightgray;
+  color: #222;
+}
+
+/* App wrapper */
+.app {
+  min-height: 100vh;
+}
+
+/* NAVBAR */
+.app .navigationbar {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  background: #194c93;
+  padding: 1rem 2rem;
+}
+
+.app .logo {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.app .nav-links {
+  display: flex;
+  gap: 1.3rem;
+}
+
+.app .navigationlinks a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.app .navigationlinks a:hover {
+  background: #374151;
+}
+
+.app .active-link {
+  background: #000000;
+}
+
+/* PAGE LAYOUT */
+.app .page-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 3rem 1rem;
+  width: 100%;
+}
+
+/* SHARED PAGE CARD */
+.app .card,
+.app .videos-page-card {
+  background: white;
+  width: 100%;
+  max-width: 1400px;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.app .card h2,
+.app .videos-page-card h2 {
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.app .card p,
+.app .videos-page-card p {
+  margin-bottom: 1.5rem;
+  color: #4b5563;
+}
+
+/* SHARED BUTTONS */
+.app .btn-primary {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.app .btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.app .btn-secondary {
+  background: #e5e7eb;
+  color: #111827;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.app .btn-secondary:hover {
+  background: #d1d5db;
+}
+
+.app .btn-danger {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.app .btn-danger:hover {
+  background: #dc2626;
+}
+
+/* MOVIES FORM */
+.app .form {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.app .form input {
+  flex: 1;
+  min-width: 250px;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+/* MOVIES GRID */
+.app .movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.app .movie-card {
+  background: #f9fafb;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: 0.2s;
+}
+
+.app .movie-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.app .movie-card h3 {
+  margin-bottom: 8px;
+}
+
+.app .movie-card p {
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+.app .movie-poster {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* VIDEOS PAGE */
+.app .videos-back-btn {
+  margin-top: 12px;
+  margin-bottom: 20px;
+}
+
+.app .videos-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.app .videos-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: #f9fafb;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+  transition: 0.2s;
+}
+
+.app .videos-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.app .videos-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.app .videos-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.app .videos-item input {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+.app .movie-card button {
+  margin-top: 10px;
+}
