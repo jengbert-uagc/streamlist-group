@@ -241,6 +241,12 @@ body {
   margin-left: 8px;
 }
 
+.app .warning-label {
+  margin-bottom: 1rem;
+  color: #b91c1c;
+  font-weight: 700;
+}
+
 .app .cart-card {
   max-width: 900px;
 }

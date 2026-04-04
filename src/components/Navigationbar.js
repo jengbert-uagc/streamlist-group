@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-function Navbar() {
+function Navbar({ cartItemCount }) {
   return (
     <nav className="navigationbar">
       <h1 className="logo">StreamList</h1>
@@ -13,8 +13,11 @@ function Navbar() {
         <NavLink to="/movies" className={({ isActive }) => isActive ? "active-link" : ""}>
           Movies
         </NavLink>
+        <NavLink to="/subscriptions" className={({ isActive }) => isActive ? "active-link" : ""}>
+          Subscriptions
+        </NavLink>
         <NavLink to="/cart" className={({ isActive }) => isActive ? "active-link" : ""}>
-          Cart
+          Cart ({cartItemCount})
         </NavLink>
         <NavLink to="/about" className={({ isActive }) => isActive ? "active-link" : ""}>
           About

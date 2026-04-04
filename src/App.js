@@ -6,10 +6,12 @@ import Movies from "./pages/Movies";
 import Cart from "./pages/Cart";
 import About from "./pages/About";
 import VideosPage from "./pages/VideosPage";
+import Subscriptions from "./pages/Subscriptions";
 
 function App() {
   const [mediaList, setMediaList] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
     const savedMedia = localStorage.getItem("mediaList");
@@ -31,13 +33,24 @@ function App() {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addToCart = (movie) => {
+  const addToCart = (itemToAdd) => {
+    const isSubscriptionItem = itemToAdd.service
+      ?.toLowerCase()
+      .includes("subscription");
+
+    if (isSubscriptionItem && cartItems.some((item) => item.isSubscription)) {
+      return {
+        success: false,
+        message: "Only one subscription can be in your cart at a time.",
+      };
+    }
+
     setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === movie.id);
+      const existingItem = prevItems.find((item) => item.id === itemToAdd.id);
 
       if (existingItem) {
         return prevItems.map((item) =>
-          item.id === movie.id
+          item.id === itemToAdd.id
             ? {
                 ...item,
                 quantity: item.quantity + 1,
@@ -48,15 +61,20 @@ function App() {
 
       return [
         {
-          id: movie.id,
-          title: movie.title,
-          price: Number((movie.vote_average * 2 || 9.99).toFixed(2)),
+          id: itemToAdd.id,
+          title: itemToAdd.title || itemToAdd.service,
+          price: Number(
+            itemToAdd.price ?? (itemToAdd.vote_average * 2 || 9.99).toFixed(2)
+          ),
           quantity: 1,
-          posterPath: movie.poster_path || "",
+          posterPath: itemToAdd.poster_path || "",
+          isSubscription: isSubscriptionItem,
         },
         ...prevItems,
       ];
     });
+
+    return { success: true };
   };
 
   const removeFromCart = (id) => {
@@ -69,14 +87,19 @@ function App() {
 
     setCartItems((prevItems) =>
       prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: parsedQuantity } : item
+        item.id === id
+          ? {
+              ...item,
+              quantity: item.isSubscription ? 1 : parsedQuantity,
+            }
+          : item
       )
     );
   };
 
   return (
     <div className="app">
-      <Navbar />
+      <Navbar cartItemCount={cartItemCount} />
       <div className="page-container">
         <Routes>
           <Route
@@ -92,6 +115,10 @@ function App() {
                 addToCart={addToCart}
               />
             }
+          />
+          <Route
+            path="/subscriptions"
+            element={<Subscriptions addToCart={addToCart} />}
           />
           <Route
             path="/cart"

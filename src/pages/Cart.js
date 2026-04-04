@@ -19,7 +19,7 @@ function Cart({ cartItems, removeFromCart, updateCartQuantity }) {
       </div>
 
       {cartItems.length === 0 ? (
-        <p>Your cart is empty. Add products from the Movies page.</p>
+        <p>Your cart is empty. Add products from the Movies or Subscriptions page.</p>
       ) : (
         <div className="cart-list">
           {cartItems.map((item) => (
@@ -35,6 +35,7 @@ function Cart({ cartItems, removeFromCart, updateCartQuantity }) {
                   id={`quantity-${item.id}`}
                   type="number"
                   min="1"
+                  max={item.isSubscription ? "1" : undefined}
                   value={item.quantity}
                   onChange={(e) => updateCartQuantity(item.id, e.target.value)}
                 />
