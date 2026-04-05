@@ -2,6 +2,21 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Environment Variables
+
+This project uses The Movie Database (TMDB) API and requires an API key.
+
+Create a `.env` file in the project root with:
+
+```bash
+REACT_APP_TMDB_API_KEY=your_tmdb_api_key_here
+```
+
+Notes:
+- Variable names must start with `REACT_APP_` in Create React App.
+- Restart the dev server after adding or changing `.env` values.
+- Do not share your real API key publicly.
+
 ## Available Scripts
 
 In the project directory, you can run:
