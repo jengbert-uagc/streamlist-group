@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 function Movies({ mediaList, setMediaList, addToCart }) {
   const [movies, setMovies] = useState([]);
@@ -8,17 +8,19 @@ function Movies({ mediaList, setMediaList, addToCart }) {
 
   const apiKey = process.env.REACT_APP_TMDB_API_KEY;
 
-  useEffect(() => {
-    const fetchMovies = async () => {
+  const fetchMovies = useCallback(
+    async (query = "") => {
       setLoading(true);
       setError("");
 
       try {
-        const response = await fetch(
-          `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(
-            ""
-          )}`
-        );
+        const url = query
+          ? `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(
+              query
+            )}`
+          : `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}`;
+
+        const response = await fetch(url);
 
         if (!response.ok) {
           throw new Error("Failed to fetch movies.");
@@ -31,37 +33,36 @@ function Movies({ mediaList, setMediaList, addToCart }) {
       } finally {
         setLoading(false);
       }
-    };
+    },
+    [apiKey]
+  );
 
-    fetchMovies();
-  }, [apiKey]);
+  useEffect(() => {
+    const savedSearch = localStorage.getItem("lastMovieSearch");
 
-  const handleSubmit = async (e) => {
+    if (savedSearch && savedSearch.trim()) {
+      setSearchTerm(savedSearch);
+      fetchMovies(savedSearch);
+    } else {
+      fetchMovies();
+    }
+  }, [fetchMovies]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!searchTerm.trim()) return;
+    const trimmedSearch = searchTerm.trim();
+    if (!trimmedSearch) return;
 
-    setLoading(true);
-    setError("");
+    localStorage.setItem("lastMovieSearch", trimmedSearch);
+    setSearchTerm(trimmedSearch);
+    fetchMovies(trimmedSearch);
+  };
 
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(
-          searchTerm
-        )}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch movies.");
-      }
-
-      const data = await response.json();
-      setMovies(data.results || []);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+  const handleClearSearch = () => {
+    setSearchTerm("");
+    localStorage.removeItem("lastMovieSearch");
+    fetchMovies();
   };
 
   const addToWatchList = (movie) => {
@@ -85,8 +86,8 @@ function Movies({ mediaList, setMediaList, addToCart }) {
 
   return (
     <div className="card">
-      <h2>Search for fun new movies. </h2>
-      <p>Enter a key term to find new movies to add to your watach list!</p>
+      <h2>Search for fun new movies.</h2>
+      <p>Enter a key term to find new movies to add to your watch list!</p>
 
       <form className="form" onSubmit={handleSubmit}>
         <input
@@ -95,8 +96,17 @@ function Movies({ mediaList, setMediaList, addToCart }) {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+
         <button type="submit" className="btn-primary">
           Search
+        </button>
+
+        <button
+          type="button"
+          className="btn-secondary"
+          onClick={handleClearSearch}
+        >
+          Clear
         </button>
       </form>
 
@@ -115,12 +125,15 @@ function Movies({ mediaList, setMediaList, addToCart }) {
             )}
 
             <h3>{movie.title}</h3>
+
             <p>
               <strong>Release Date:</strong> {movie.release_date}
             </p>
+
             <p>
               <strong>TMDB Rating:</strong> {movie.vote_average}
             </p>
+
             <p>{movie.overview}</p>
 
             <button
@@ -130,6 +143,7 @@ function Movies({ mediaList, setMediaList, addToCart }) {
             >
               Add to Watch List
             </button>
+
             <button
               type="button"
               className="btn-secondary"
